@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Http.Headers;
 using System.Resources;
 using System.Runtime.CompilerServices;
@@ -26,6 +27,7 @@ namespace Bitwise_manipulation___Ethan
                 Console.WriteLine($"\r\n3 Rightmost bits of {item} is {rightmost_for3_Q20(item)}");
                 Console.WriteLine($"\r\nleftmost bit of {item} is {Leftmost_Q21(item)}");
             }
+            Q_31_basechoice();
            
             Console.ReadKey();
         }
@@ -105,20 +107,48 @@ namespace Bitwise_manipulation___Ethan
             int base_ = int.Parse(Console.ReadLine());
             Console.WriteLine("Enter denary input");
             int input = int.Parse(Console.ReadLine());
+            if (base_ == 16)
+                Denary_to_hex_Q31(input);
+            Console.WriteLine($"Number: {input}, Bits: {Denary_to_bits_Q31(input,base_)}");
         }
        
-        static string Denary_to_bits_Q31(int a)
+        static string Denary_to_bits_Q31(int a,int base_)
         {
-            List<int> powers_of_2 = new List<int>();
+            
+            return bit_assign(base_order(a, base_), a);
+        }
+        static List<int> base_order(int a, int base_) //returns list of powers of base needed, eg 1,2,4,8,16 (for base 2)
+        {
+            List<int> powers = new List<int>();
             int i = 0;
             int number = a;
-            while(number > Math.Pow(2, i))
+            while (number > Math.Pow(base_, i))
             {
-                powers_of_2.Add(Convert.ToInt32(Math.Pow(2, i)));
+                powers.Add(Convert.ToInt32(Math.Pow(2, i)));
                 ++i;
             }
-            powers_of_2.Reverse();
-            return bit_assign(powers_of_2, number);
+            powers.Reverse();
+            return powers;
+        }
+        static string Denary_to_hex_Q31(int a)
+        {
+            List<int> power_order = base_order(a, 16);
+            List<int> hex_val = new List<int>();
+            int number = a;
+            foreach(int item in power_order)
+            {
+                List<int> result = Denary_to_hexvalue(item, number);
+                hex_val.Add(result[0]);
+                number = result[1];
+            }
+            Dictionary<int, string> openWith =
+                new Dictionary<int, string> {10,"A" ,
+                };
+            //TODO convert numbers like 15 into F
+        }
+        static List<int> Denary_to_hexvalue(int list, int number)
+        {
+            return new List<int> { number / list, number % list };
         }
     }
 }
