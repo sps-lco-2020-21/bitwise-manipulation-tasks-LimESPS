@@ -18,8 +18,9 @@ namespace Bitwise_manipulation___Ethan
     {
         static void Main(string[] args)
         {
+            
             Console.WriteLine(rightmost_alternate_method(numbit()));
-
+            
             List<string> bit_examples = new List<string> { "10101", "10001", "000000100000", "0100111" };
             foreach(string item in bit_examples)
             {
@@ -28,7 +29,7 @@ namespace Bitwise_manipulation___Ethan
                 Console.WriteLine($"\r\nleftmost bit of {item} is {Leftmost_Q21(item)}");
             }
             Q_31_basechoice();
-           
+            BIO_Q3();
             Console.ReadKey();
         }
         static int bittoint(string a)
@@ -37,7 +38,7 @@ namespace Bitwise_manipulation___Ethan
         }
         static string numbit()
         {
-            Console.WriteLine("Enter input: ");
+            Console.WriteLine("(alternate method to Q21)Enter input: ");
             int n = int.Parse(Console.ReadLine());
             Console.WriteLine($"(alternate method) Rightmost bit for your input {n} is:");
             return Convert.ToString(n, 2);
@@ -108,11 +109,12 @@ namespace Bitwise_manipulation___Ethan
             Console.WriteLine("Enter denary input");
             int input = int.Parse(Console.ReadLine());
             if (base_ == 16)
-                Denary_to_hex_Q31(input);
-            Console.WriteLine($"Number: {input}, Bits: {Denary_to_bits_Q31(input,base_)}");
+                Console.WriteLine($"Number: {input}, Bits/Character: {Denary_to_hex_Q31(input)}");
+            else
+                Console.WriteLine($"Number: {input}, Bits/Character: {Denary_to_bits_Q31(input,base_)}");
         }
        
-        static string Denary_to_bits_Q31(int a,int base_)
+        static string Denary_to_bits_Q31(int a,int base_) //does not work when input is 4 and base 2 is 0
         {
             
             return bit_assign(base_order(a, base_), a);
@@ -124,7 +126,7 @@ namespace Bitwise_manipulation___Ethan
             int number = a;
             while (number > Math.Pow(base_, i))
             {
-                powers.Add(Convert.ToInt32(Math.Pow(2, i)));
+                powers.Add(Convert.ToInt32(Math.Pow(base_, i)));
                 ++i;
             }
             powers.Reverse();
@@ -134,6 +136,7 @@ namespace Bitwise_manipulation___Ethan
         {
             List<int> power_order = base_order(a, 16);
             List<int> hex_val = new List<int>();
+            List<string> return_result = new List<string>();
             int number = a;
             foreach(int item in power_order)
             {
@@ -141,14 +144,122 @@ namespace Bitwise_manipulation___Ethan
                 hex_val.Add(result[0]);
                 number = result[1];
             }
-            Dictionary<int, string> openWith =
-                new Dictionary<int, string> {10,"A" ,
-                };
-            //TODO convert numbers like 15 into F
+            Dictionary<int, string> Letter = new Dictionary<int, string>()
+            {
+                {10,"A"},
+                {11,"B"},
+                {12,"C"},
+                {13,"D"},
+                {14,"E"},
+                {15,"F"}
+            };
+            foreach(int item in hex_val)
+            {
+                if (Letter.TryGetValue(item, out string end))
+                    return_result.Add(Letter[item]);
+                
+                else
+                    return_result.Add(item.ToString());
+            }
+            return string.Join("", return_result);
+                
         }
         static List<int> Denary_to_hexvalue(int list, int number)
         {
             return new List<int> { number / list, number % list };
+        }
+        static void BIO_Q3() //Works!!
+        {
+            Console.WriteLine("(To find nth term of upside number) Enter number: ");
+            int n = int.Parse(Console.ReadLine());
+            Console.WriteLine("Value of {0}th term is {1}",n,obtain_nth_term(n));
+        }
+        static int obtain_nth_term(int n) //only works for 1 and all even digit numbers, does not work for odd digit numbers
+        {
+            List<int> upside_down_numbers = new List<int>();
+            for(int i = 0; ; ++i)
+            {
+                
+                if (upside_down_numbers.Count() == n)
+                    break;
+                if (is_upsidedown_number(i))
+                {
+                    upside_down_numbers.Add(i);
+                    
+                }
+                
+                    
+            }
+            Console.WriteLine(string.Join(",", upside_down_numbers));
+            return upside_down_numbers[upside_down_numbers.Count() - 1];
+        }
+        static bool is_upsidedown_number(int a)
+        {
+            string number_form = a.ToString();
+
+            List<int> digit = new List<int>(); //digit is int list
+            foreach (char item in number_form.ToCharArray())//.split() function does not actually split string
+                digit.Add(int.Parse(item.ToString()));
+            
+            if(digit.Count() % 2 == 1) //odd number of digits
+            {
+                
+                return loop_Q30(digit);
+            }
+            else //even number of digits
+            {
+                
+                return loop_Q30_evencount(digit);
+            }
+        }
+        static bool loop_Q30(List <int> digit)
+        {
+            int i = 0;
+            while (i < (digit.Count() / 2))
+            {
+                if (digit[i] + digit[digit.Count() - (1 + i)] != 10)
+                {
+                   
+                    return false;
+                }
+                
+                ++i;
+            }
+            if (digit[digit.Count() / 2] * 2 != 10)
+            {
+                
+                return false;
+            }
+                
+            else
+                return true;
+        }
+        static bool loop_Q30_evencount(List<int> digit) //works
+        {
+            int i = 0;
+            while (i < digit.Count() / 2)
+            {
+                if (digit[i] + digit[digit.Count() - (1 + i)] != 10)
+                {
+                    
+                    return false;
+                }
+                ++i;
+            }
+            
+            return two_digit_exception(digit,false);
+        }
+        static bool two_digit_exception(List<int> digit, bool a)
+        {
+            if (digit[digit.Count() / 2] + digit[(digit.Count() / 2) - 1] != 10)
+            {
+                
+                return false;
+            }
+            else
+                return true;
+
+
         }
     }
 }
