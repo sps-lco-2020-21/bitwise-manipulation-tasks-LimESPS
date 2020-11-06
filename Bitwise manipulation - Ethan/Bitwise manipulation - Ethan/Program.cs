@@ -27,9 +27,11 @@ namespace Bitwise_manipulation___Ethan
                 Console.WriteLine($"\r\n\r\nRightmost bit of {item} is {rightmost_Q19(item)}");
                 Console.WriteLine($"\r\n3 Rightmost bits of {item} is {rightmost_for3_Q20(item)}");
                 Console.WriteLine($"\r\nleftmost bit of {item} is {Leftmost_Q21(item)}");
+                Console.WriteLine($"\r\nthree leftmost bits of {item} removed is { remove_3leftmost_Q26(item)}");
             }
             Q_31_basechoice();
-            BIO_Q3();
+            BIO_Q3(); //upside down numbers code (olympiad Q3)
+            
             Console.ReadKey();
         }
         static int bittoint(string a)
@@ -174,7 +176,7 @@ namespace Bitwise_manipulation___Ethan
             int n = int.Parse(Console.ReadLine());
             Console.WriteLine("Value of {0}th term is {1}",n,obtain_nth_term(n));
         }
-        static int obtain_nth_term(int n) //only works for 1 and all even digit numbers, does not work for odd digit numbers
+        static int obtain_nth_term(int n)
         {
             List<int> upside_down_numbers = new List<int>();
             for(int i = 0; ; ++i)
@@ -258,7 +260,11 @@ namespace Bitwise_manipulation___Ethan
             }
             else
                 return true;
-
+        }
+        static string remove_3leftmost_Q26(string a) //does not work
+        {
+            int removedint = bittoint(a)<<3;
+            return Denary_to_bits_Q31(removedint, 2);
 
         }
     }
