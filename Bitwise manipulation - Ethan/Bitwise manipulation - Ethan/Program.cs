@@ -263,8 +263,8 @@ namespace Bitwise_manipulation___Ethan
         }
         static string remove_3leftmost_Q26(string a) //does not work
         {
-            int removedint = bittoint(a)<<3;
-            return Denary_to_bits_Q31(removedint, 2);
+            uint removedint = Convert.ToUInt16(bittoint(a)<<3);
+            return Convert.ToString(removedint, toBase:2);
 
         }
     }
